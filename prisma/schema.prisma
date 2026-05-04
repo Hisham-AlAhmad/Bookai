@@ -1,0 +1,233 @@
+// Bookai — Prisma Schema
+// Database: MySQL on Railway
+// ORM: Prisma 6
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// BUSINESSES — tenant root, every table links here
+// ─────────────────────────────────────────────
+model Business {
+  id          String          @id @default(uuid())
+  slug        String          @unique @db.VarChar(80)   // bookai.app/tonys-barber
+  name        String          @db.VarChar(120)
+  logo_url    String?         @db.Text
+  cover_url   String?         @db.Text
+  phone       String?         @db.VarChar(20)
+  address     String?         @db.Text
+  city        String?         @db.VarChar(60)
+  category    BusinessCategory
+  bio         String?         @db.Text
+  plan        Plan            @default(free)
+  active      Boolean         @default(true)
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+
+  // Relations
+  staff         Staff[]
+  services      Service[]
+  working_hours WorkingHours[]
+  bookings      Booking[]
+
+  @@map("businesses")
+}
+
+enum BusinessCategory {
+  barbershop
+  salon
+  clinic
+  tutor
+  mechanic
+  other
+}
+
+enum Plan {
+  free
+  starter
+  pro
+}
+
+// ─────────────────────────────────────────────
+// STAFF — merged with USERS for MVP simplicity
+// A staff member can have dashboard login (can_login = true)
+// or just be a bookable person with no login
+// ─────────────────────────────────────────────
+model Staff {
+  id            String    @id @default(uuid())
+  business_id   String
+  name          String    @db.VarChar(80)
+  phone         String?   @db.VarChar(20)
+  avatar_url    String?   @db.Text
+  bio           String?   @db.Text
+
+  // Dashboard login fields — only populated if can_login = true
+  can_login     Boolean   @default(false)
+  email         String?   @unique @db.VarChar(120)
+  password_hash String?   @db.Text
+  role          StaffRole @default(staff)
+
+  active        Boolean   @default(true)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  // Relations
+  business      Business        @relation(fields: [business_id], references: [id])
+  services      StaffService[]
+  bookings      Booking[]
+
+  @@index([business_id, active])
+  @@map("staff")
+}
+
+enum StaffRole {
+  owner
+  manager
+  staff
+}
+
+// ─────────────────────────────────────────────
+// SERVICES — what the business offers
+// duration_mins drives all slot availability logic
+// ─────────────────────────────────────────────
+model Service {
+  id            String    @id @default(uuid())
+  business_id   String
+  name          String    @db.VarChar(120)
+  description   String?   @db.Text
+  duration_mins Int       @db.SmallInt     // drives ends_at calculation
+  price_usd     Decimal?  @db.Decimal(8, 2)
+  active        Boolean   @default(true)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  // Relations
+  business      Business        @relation(fields: [business_id], references: [id])
+  staff         StaffService[]
+  bookings      Booking[]
+
+  @@index([business_id, active])
+  @@map("services")
+}
+
+// ─────────────────────────────────────────────
+// STAFF_SERVICES — which staff can perform which service
+// Filters the staff list when customer picks a service
+// ─────────────────────────────────────────────
+model StaffService {
+  staff_id    String
+  service_id  String
+
+  staff       Staff   @relation(fields: [staff_id], references: [id])
+  service     Service @relation(fields: [service_id], references: [id])
+
+  @@id([staff_id, service_id])
+  @@map("staff_services")
+}
+
+// ─────────────────────────────────────────────
+// WORKING_HOURS — one row per day per business
+// is_closed = true means the business is off that day
+// ─────────────────────────────────────────────
+model WorkingHours {
+  id          String    @id @default(uuid())
+  business_id String
+  day_of_week Int       @db.TinyInt   // 0 = Sunday, 6 = Saturday
+  open_at     String    @db.VarChar(5) // "09:00"
+  close_at    String    @db.VarChar(5) // "18:00"
+  is_closed   Boolean   @default(false)
+
+  business    Business  @relation(fields: [business_id], references: [id])
+
+  @@unique([business_id, day_of_week])
+  @@map("working_hours")
+}
+
+// ─────────────────────────────────────────────
+// CUSTOMERS — identified by phone, no account needed
+// no_show_count is incremented by the business dashboard
+// ─────────────────────────────────────────────
+model Customer {
+  id                 String    @id @default(uuid())
+  name               String    @db.VarChar(80)
+  phone              String    @unique @db.VarChar(20)
+  preferred_language Language  @default(ar)
+  no_show_count      Int       @default(0) @db.SmallInt
+  last_seen          DateTime?
+  created_at         DateTime  @default(now())
+
+  // Relations
+  bookings    Booking[]
+
+  @@map("customers")
+}
+
+enum Language {
+  ar
+  en
+}
+
+// ─────────────────────────────────────────────
+// BOOKINGS — the core table, every appointment lives here
+// ends_at is stored explicitly (not calculated at query time)
+// for fast conflict detection using index range overlap
+// ─────────────────────────────────────────────
+model Booking {
+  id                  String         @id @default(uuid())
+  business_id         String
+  customer_id         String
+  staff_id            String
+  service_id          String
+  starts_at           DateTime
+  ends_at             DateTime       // starts_at + service.duration_mins
+  status              BookingStatus  @default(pending)
+  booked_via          BookingSource  @default(form)
+  customer_note       String?        @db.Text  // "fade on sides" — per booking, not per customer
+  reminder_sent       ReminderStatus @default(no)
+  cancelled_by        CancelledBy?
+  cancellation_reason String?        @db.Text
+  created_at          DateTime       @default(now())
+  updated_at          DateTime       @updatedAt
+
+  // Relations
+  business    Business  @relation(fields: [business_id], references: [id])
+  customer    Customer  @relation(fields: [customer_id], references: [id])
+  staff       Staff     @relation(fields: [staff_id], references: [id])
+  service     Service   @relation(fields: [service_id], references: [id])
+
+  @@index([business_id, starts_at])
+  @@index([business_id, status])
+  @@index([staff_id, starts_at, ends_at])  // conflict detection query
+  @@index([customer_id])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  pending
+  confirmed
+  cancelled
+  no_show
+}
+
+enum BookingSource {
+  voice
+  form
+  whatsapp
+}
+
+enum ReminderStatus {
+  no
+  yes
+  failed
+}
+
+enum CancelledBy {
+  customer
+  business
+}
