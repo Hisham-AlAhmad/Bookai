@@ -1,0 +1,99 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── Header ────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.greeting {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin: 0 0 0.2rem;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.8px;
+  font-family: 'Georgia', serif;
+}
+
+.dateBadge {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  background: #fff;
+  border: 1px solid #ece9e2;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #777;
+  font-weight: 500;
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+}
+
+/* ── Stats grid ────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1100px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Section ───────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.sectionLink {
+  font-size: 0.83rem;
+  color: #c8a96e;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.sectionLink:hover {
+  color: #a8893e;
+}
