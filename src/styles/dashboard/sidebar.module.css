@@ -18,6 +18,19 @@
   width: 72px;
 }
 
+.sidebar.collapsed .logoArea {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem 0.85rem;
+}
+
+.sidebar.collapsed .collapseBtn {
+  margin-left: 0;
+  width: 30px;
+  height: 30px;
+}
+
 /* ── Logo area ─────────────────────────────────── */
 .logoArea {
   display: flex;
@@ -237,6 +250,17 @@
   padding: 1rem 1.1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   min-height: 72px;
+}
+
+.sidebar.collapsed .userFooter {
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem 0.5rem 1rem;
+}
+
+.sidebar.collapsed .signOutBtn {
+  width: 30px;
+  height: 30px;
 }
 
 .userAvatar {

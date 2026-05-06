@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
@@ -96,6 +96,14 @@ export default function Sidebar({ session }) {
     const [collapsed, setCollapsed] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const role = session?.user?.role
+
+    useEffect(() => {
+        document.body.classList.toggle('sidebar-collapsed', collapsed)
+
+        return () => {
+            document.body.classList.remove('sidebar-collapsed')
+        }
+    }, [collapsed])
 
     const visibleItems = NAV_ITEMS.filter((item) => item.roles.includes(role))
 

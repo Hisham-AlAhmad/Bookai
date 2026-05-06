@@ -9,15 +9,28 @@
   margin-left: 260px;
   min-height: 100vh;
   transition: margin-left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+:global(body.sidebar-collapsed) .main {
+  margin-left: 72px;
 }
 
 .content {
-  padding: 2.5rem;
+  padding: 1.75rem 2.5rem 2.5rem;
   max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
   .main {
+    margin-left: 0;
+  }
+
+  :global(body.sidebar-collapsed) .main {
     margin-left: 0;
   }
 
