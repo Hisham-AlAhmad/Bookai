@@ -15,6 +15,20 @@ export async function middleware(req) {
     if (!allowedRoles.includes(token.role)) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
+
+    if (pathname.startsWith('/dashboard/services')) {
+      const servicesRoles = ['owner', 'manager']
+      if (!servicesRoles.includes(token.role)) {
+        return NextResponse.redirect(new URL('/dashboard', req.url))
+      }
+    }
+
+    if (pathname.startsWith('/dashboard/staff')) {
+      const staffRoles = ['owner', 'manager']
+      if (!staffRoles.includes(token.role)) {
+        return NextResponse.redirect(new URL('/dashboard', req.url))
+      }
+    }
   }
 
   // --- Protect /admin — superadmin only ---
