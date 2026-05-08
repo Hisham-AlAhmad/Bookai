@@ -39,9 +39,12 @@ export default function LoginPage() {
       <div className={styles.shell}>
         <section className={styles.brandPanel}>
           <div className={styles.brandTop}>
-            <div className={styles.brandMark}>B</div>
+            <img
+              src="/logos/logo-rectangle-dark.png"
+              alt="Bookai"
+              className={styles.brandLogo}
+            />
             <div className={styles.brandCopy}>
-              <p className={styles.brandName}>Bookai</p>
               <p className={styles.brandCaption}>Smart booking for businesses</p>
             </div>
           </div>

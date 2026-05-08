@@ -137,8 +137,11 @@ export default function Sidebar({ session }) {
 
                 {/* Logo area */}
                 <div className={styles.logoArea}>
-                    <div className={styles.logoMark}>B</div>
-                    {!collapsed && <span className={styles.logoText}>Bookai</span>}
+                    <img
+                        src={collapsed ? '/logos/logo-icon.png' : '/logos/logo-rectangle-dark.png'}
+                        alt="Bookai"
+                        className={styles.logoImage}
+                    />
                     <button
                         className={styles.collapseBtn}
                         onClick={() => setCollapsed(!collapsed)}

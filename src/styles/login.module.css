@@ -74,34 +74,18 @@
   z-index: 1;
 }
 
-.brandMark {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #c8a96e, #e8c98a);
-  color: #0f0f0f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1.2rem;
-  font-family: 'Georgia', serif;
-  letter-spacing: -0.4px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+.brandLogo {
+  width: 170px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.35));
 }
 
 .brandCopy {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-}
-
-.brandName {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.3px;
-  font-family: 'Georgia', serif;
 }
 
 .brandCaption {

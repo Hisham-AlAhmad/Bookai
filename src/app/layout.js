@@ -5,6 +5,9 @@ import './globals.css'
 export const metadata = {
   title: 'Bookai',
   description: 'Smart booking for Lebanese businesses',
+  icons: {
+    icon: '/logos/logo-icon.png',
+  },
 }
 
 export default function RootLayout({ children }) {
