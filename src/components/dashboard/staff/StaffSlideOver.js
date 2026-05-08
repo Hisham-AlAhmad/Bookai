@@ -180,7 +180,7 @@ export default function StaffSlideOver({
           {services.length > 0 && (
             <div className={styles.field}>
               <label className={styles.label}>Services</label>
-              <p className={styles.hint}>Leave all unselected to assign all services.</p>
+              <p className={styles.hint}>Leave all unselected if he doesn't provide any services.</p>
               <div className={styles.serviceGrid}>
                 {services.map((svc) => {
                   const checked = form.service_ids.includes(svc.id)

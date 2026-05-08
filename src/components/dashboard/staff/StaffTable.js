@@ -66,7 +66,7 @@ export default function StaffTable({ staff, canManage, onEdit, onToggleActive, c
                             {ss.service.name}
                           </span>
                         ))
-                      : <span className={styles.none}>All services</span>
+                      : <span className={styles.none}>No services</span>
                     }
                     {member.services.length > 3 && (
                       <span className={styles.servicePillMore}>
