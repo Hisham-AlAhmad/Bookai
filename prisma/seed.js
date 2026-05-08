@@ -197,7 +197,7 @@ async function main() {
             date: "2026-05-06",
             time: "10:00",
             status: "pending",
-            source: "whatsapp",
+            source: "form",
             note: "Short beard.",
         },
         {
@@ -236,7 +236,7 @@ async function main() {
             date: "2026-05-08",
             time: "15:30",
             status: "confirmed",
-            source: "whatsapp",
+            source: "form",
         },
         {
             customer: tonyCustomers[0],
@@ -254,7 +254,7 @@ async function main() {
             date: "2026-05-09",
             time: "12:00",
             status: "confirmed",
-            source: "whatsapp",
+            source: "form",
         },
     ];
 
@@ -426,7 +426,7 @@ async function main() {
             date: "2026-05-06",
             time: "14:00",
             status: "cancelled",
-            source: "whatsapp",
+            source: "form",
             cancelledBy: "business",
             cancellationReason: "Stylist unavailable.",
         },
@@ -455,7 +455,7 @@ async function main() {
             date: "2026-05-08",
             time: "10:30",
             status: "pending",
-            source: "whatsapp",
+            source: "form",
         },
         {
             customer: lunaCustomers[1],
@@ -498,12 +498,20 @@ async function main() {
     console.log("Seed complete.");
 }
 
-main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (error) => {
+async function runSeed() {
+    let hasError = false;
+
+    try {
+        await main();
+    } catch (error) {
+        hasError = true;
         console.error(error);
+    } finally {
         await prisma.$disconnect();
-        process.exit(1);
-    });
+        if (hasError) {
+            process.exit(1);
+        }
+    }
+}
+
+runSeed();

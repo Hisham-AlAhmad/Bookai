@@ -218,7 +218,6 @@ enum BookingStatus {
 enum BookingSource {
   voice
   form
-  whatsapp
 }
 
 enum ReminderStatus {
