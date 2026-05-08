@@ -1,0 +1,149 @@
+.root {
+    position: relative;
+    width: 100%;
+}
+
+.root[data-open='true'] {
+    z-index: 40;
+}
+
+.trigger {
+    width: 100%;
+    border: 1px solid #e5e0d8;
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #111;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    padding: 0.65rem 0.875rem;
+    font-size: 0.9rem;
+}
+
+.triggerOpen,
+.trigger:focus-visible {
+    border-color: #c8a96e;
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.18);
+    outline: none;
+}
+
+.triggerValue {
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.triggerIcon {
+    width: 14px;
+    height: 14px;
+    color: #aaa;
+}
+
+.list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: auto;
+    background: #fff;
+    border: 1px solid #ece9e2;
+    border-radius: 14px;
+    box-shadow: 0 16px 35px rgba(15, 15, 15, 0.12);
+    width: max(100%, 220px);
+    max-width: 320px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 0.35rem;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: #e5e0d8;
+    border-radius: 999px;
+}
+
+.option {
+    width: 100%;
+    border: 1px solid transparent;
+    background: #faf8f5;
+    border-radius: 12px;
+    padding: 0.55rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.option:hover {
+    border-color: #c8a96e;
+    background: #fff;
+    transform: translateY(-1px);
+}
+
+.optionActive {
+    border-color: #c8a96e;
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(200, 169, 110, 0.12);
+}
+
+.optionCode {
+    font-weight: 700;
+    color: #111;
+    font-size: 0.85rem;
+    min-width: 3.25rem;
+}
+
+.optionName {
+    font-size: 0.78rem;
+    color: #6f6a63;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+}
+
+.root[data-variant='booking'] .trigger {
+    background: #faf8f5;
+    border: 2px solid #ece9e2;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+}
+
+.root[data-variant='booking'] .triggerOpen,
+.root[data-variant='booking'] .trigger:focus-visible {
+    box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.2);
+}
+
+.root[data-variant='staff'] .trigger {
+    padding: 0.65rem 0.875rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+    .list {
+        max-height: 220px;
+    }
+
+    .option {
+        padding: 0.5rem 0.65rem;
+        gap: 0.6rem;
+    }
+
+    .optionCode {
+        min-width: 3rem;
+        font-size: 0.8rem;
+    }
+
+    .optionName {
+        font-size: 0.72rem;
+    }
+}

@@ -475,6 +475,13 @@
   gap: 0.35rem;
 }
 
+.phoneRow {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
 .fieldLabel {
   font-size: 0.8rem;
   font-weight: 600;
@@ -499,6 +506,18 @@
   box-sizing: border-box;
 }
 
+.phoneCountry {
+  flex: 0 0 130px;
+}
+
+.phoneCountry[data-open='true'] {
+  flex-basis: 100px;
+}
+
+.phoneInput {
+  flex: 1;
+}
+
 .fieldInput:focus,
 .fieldTextarea:focus {
   border-color: #c8a96e;
@@ -514,6 +533,16 @@
   font-size: 0.72rem;
   color: #bbb;
   font-family: Arial, sans-serif;
+}
+
+@media (max-width: 520px) {
+  .phoneRow {
+    gap: 0.5rem;
+  }
+
+  .phoneCountry {
+    flex-basis: 105px;
+  }
 }
 
 /* ── Selected check ────────────────────────────── */

@@ -42,6 +42,7 @@
   }
 }
 
+
 @keyframes slideOut {
   from {
     transform: translateX(0);
@@ -193,6 +194,35 @@
   background-position: right 0.75rem center;
   background-size: 16px;
   padding-right: 2.5rem;
+}
+
+.phoneRow {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+.phoneCountry {
+  flex: 0 0 130px;
+}
+
+.phoneCountry[data-open='true'] {
+  flex-basis: 100px;
+}
+
+.phoneInput {
+  flex: 1;
+}
+
+@media (max-width: 520px) {
+  .phoneRow {
+    gap: 0.5rem;
+  }
+
+  .phoneCountry {
+    flex-basis: 105px;
+  }
 }
 
 /* ── Service checkboxes ────────────────────────── */

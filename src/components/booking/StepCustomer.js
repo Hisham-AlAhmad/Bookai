@@ -2,12 +2,25 @@
 
 import { useState } from 'react'
 import { formatUtcTime } from '@/lib/time'
+import PhoneCountrySelect from '@/components/shared/PhoneCountrySelect'
+import {
+  formatInternationalNumber,
+  formatNationalNumber,
+  getDefaultDialCode,
+  getPhoneCountryOptions,
+  getPhoneDigits,
+  getPhonePlaceholder,
+} from '@/lib/phone'
 import styles from '@/styles/booking/steps.module.css'
 
 export default function StepCustomer({ selections, onConfirm, onBack, loading, error }) {
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [phoneCountry, setPhoneCountry] = useState(getDefaultDialCode())
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [note, setNote] = useState('')
+  const phoneOptions = getPhoneCountryOptions(phoneCountry)
+  const phoneDigits = getPhoneDigits(phoneNumber)
+  const phonePlaceholder = getPhonePlaceholder(phoneCountry)
 
   function formatTime(iso) {
     return formatUtcTime(iso, '12')
@@ -21,8 +34,12 @@ export default function StepCustomer({ selections, onConfirm, onBack, loading, e
 
   function handleSubmit(e) {
     e.preventDefault()
-    if (!name.trim() || !phone.trim()) return
-    onConfirm({ name: name.trim(), phone: phone.trim(), note: note.trim() })
+    if (!name.trim() || !phoneDigits) return
+    onConfirm({
+      name: name.trim(),
+      phone: formatInternationalNumber(phoneCountry, phoneNumber),
+      note: note.trim(),
+    })
   }
 
   return (
@@ -78,15 +95,27 @@ export default function StepCustomer({ selections, onConfirm, onBack, loading, e
 
         <div className={styles.field}>
           <label className={styles.fieldLabel}>Phone Number</label>
-          <input
-            type="tel"
-            className={styles.fieldInput}
-            placeholder="+961 71 000 000"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-            autoComplete="tel"
-          />
+          <div className={styles.phoneRow}>
+            <PhoneCountrySelect
+              value={phoneCountry}
+              options={phoneOptions}
+              onChange={(nextCode) => {
+                setPhoneCountry(nextCode)
+                setPhoneNumber(formatNationalNumber(nextCode, phoneNumber))
+              }}
+              className={styles.phoneCountry}
+              variant="booking"
+            />
+            <input
+              type="tel"
+              className={`${styles.fieldInput} ${styles.phoneInput}`}
+              placeholder={phonePlaceholder}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(formatNationalNumber(phoneCountry, e.target.value))}
+              required
+              autoComplete="tel-national"
+            />
+          </div>
           <span className={styles.fieldHint}>We'll send your reminder here.</span>
         </div>
 
@@ -110,7 +139,7 @@ export default function StepCustomer({ selections, onConfirm, onBack, loading, e
           <button
             type="submit"
             className={styles.btnPrimary}
-            disabled={loading || !name.trim() || !phone.trim()}
+            disabled={loading || !name.trim() || !phoneDigits}
           >
             {loading ? (
               <>

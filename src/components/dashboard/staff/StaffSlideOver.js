@@ -2,6 +2,14 @@
 
 import { useState } from 'react'
 import styles from '@/styles/dashboard/staff-slideover.module.css'
+import PhoneCountrySelect from '@/components/shared/PhoneCountrySelect'
+import {
+  formatInternationalNumber,
+  formatNationalNumber,
+  getPhoneCountryOptions,
+  getPhonePlaceholder,
+  splitPhoneNumber,
+} from '@/lib/phone'
 
 export default function StaffSlideOver({
   member,
@@ -15,9 +23,16 @@ export default function StaffSlideOver({
   const isEdit = Boolean(member)
   const isSelfOwner = isOwner && member?.id === currentUserId
 
+  const initialPhone = splitPhoneNumber(member?.phone || '')
+  const [phoneCountry, setPhoneCountry] = useState(initialPhone.dialCode)
+  const [phoneNumber, setPhoneNumber] = useState(
+    formatNationalNumber(initialPhone.dialCode, initialPhone.nationalNumber)
+  )
+  const phoneOptions = getPhoneCountryOptions(phoneCountry)
+  const phonePlaceholder = getPhonePlaceholder(phoneCountry)
+
   const [form, setForm] = useState({
     name: member?.name || '',
-    phone: member?.phone || '',
     bio: member?.bio || '',
     role: member?.role || 'staff',
     can_login: member?.can_login || false,
@@ -27,44 +42,6 @@ export default function StaffSlideOver({
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
-  function formatPhone(value) {
-    const trimmed = value.trim()
-    if (!trimmed) return ''
-
-    if (trimmed === '+') return '+'
-
-    const digitsOnly = trimmed.replace(/[^\d]/g, '')
-    const hasPlus = trimmed.startsWith('+')
-
-    if (!digitsOnly) return hasPlus ? '+' : ''
-
-    if (hasPlus) {
-      if (digitsOnly.startsWith('961')) {
-        const rest = digitsOnly.slice(3, 11)
-        const parts = []
-        if (rest.length > 0) parts.push(rest.slice(0, 2))
-        if (rest.length > 2) parts.push(rest.slice(2, 5))
-        if (rest.length > 5) parts.push(rest.slice(5, 8))
-        return `+961 ${parts.join(' ')}`.trim()
-      }
-
-      const ccLength = Math.min(3, Math.max(1, digitsOnly.length - 9))
-      const cc = digitsOnly.slice(0, ccLength)
-      const rest = digitsOnly.slice(ccLength)
-      const groups = []
-      for (let i = 0; i < rest.length; i += 3) {
-        groups.push(rest.slice(i, i + 3))
-      }
-      return `+${cc} ${groups.join(' ')}`.trim()
-    }
-
-    const groups = []
-    for (let i = 0; i < digitsOnly.length; i += 3) {
-      groups.push(digitsOnly.slice(i, i + 3))
-    }
-    return groups.join(' ')
-  }
 
   function set(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -100,7 +77,10 @@ export default function StaffSlideOver({
     const url = isEdit ? `/api/staff/${member.id}` : '/api/staff'
     const method = isEdit ? 'PATCH' : 'POST'
 
-    const payload = { ...form }
+    const payload = {
+      ...form,
+      phone: formatInternationalNumber(phoneCountry, phoneNumber) || '',
+    }
     if (!payload.password) delete payload.password
 
     const res = await fetch(url, {
@@ -151,12 +131,26 @@ export default function StaffSlideOver({
 
           <div className={styles.field}>
             <label className={styles.label}>Phone</label>
-            <input
-              className={styles.input}
-              value={form.phone}
-              onChange={(e) => set('phone', formatPhone(e.target.value))}
-              placeholder="+961 70 000 000"
-            />
+            <div className={styles.phoneRow}>
+              <PhoneCountrySelect
+                value={phoneCountry}
+                options={phoneOptions}
+                onChange={(nextCode) => {
+                  setPhoneCountry(nextCode)
+                  setPhoneNumber(formatNationalNumber(nextCode, phoneNumber))
+                }}
+                className={styles.phoneCountry}
+                variant="staff"
+              />
+              <input
+                className={`${styles.input} ${styles.phoneInput}`}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(formatNationalNumber(phoneCountry, e.target.value))}
+                placeholder={phonePlaceholder}
+                type="tel"
+                autoComplete="tel-national"
+              />
+            </div>
           </div>
 
           <div className={styles.field}>
