@@ -1,0 +1,102 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem 2.5rem;
+  gap: 0.75rem;
+}
+
+.iconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c8a96e, #e8c98a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 8px 24px rgba(200, 169, 110, 0.35);
+}
+
+.iconWrap svg {
+  width: 30px;
+  height: 30px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  font-family: 'Georgia', serif;
+  letter-spacing: -0.4px;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #999;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  max-width: 320px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #aaa;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-family: Arial, sans-serif;
+  flex-shrink: 0;
+}
+
+.value {
+  font-size: 0.875rem;
+  color: #222;
+  font-weight: 600;
+  text-align: right;
+  font-family: Arial, sans-serif;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e8a020;
+  background: rgba(232, 160, 32, 0.1);
+  border: 1px solid rgba(232, 160, 32, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+.note {
+  font-size: 0.72rem;
+  color: #ccc;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.3px;
+}

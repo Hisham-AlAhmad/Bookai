@@ -1,0 +1,653 @@
+/* ── Step shell ────────────────────────────────── */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stepHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stepTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.4px;
+  font-family: 'Georgia', serif;
+}
+
+.stepSub {
+  font-size: 0.875rem;
+  color: #999;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* ── Time format toggle ───────────────────────── */
+.timeToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.35rem;
+  padding: 0.6rem 0.75rem;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 12px;
+}
+
+.timeToggleText {
+  flex: 1;
+  font-size: 0.78rem;
+  color: #6f6a63;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  font-family: Arial, sans-serif;
+}
+
+.timeToggleControl {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timeToggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.timeToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #c8a96e;
+  text-shadow: 0 0 2px #e8e8e8;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+
+.timeToggleLabel {
+  min-width: 1.4rem;
+  text-align: center;
+}
+
+.timeToggleSwitch {
+  --bg-toggle: #ffffff;
+  --bg-circle: #c8a96e;
+  --w-toggle-switch: 70px;
+  --w-h-toggle-circle: 22px;
+  --pd-toggle-switch: 0.25rem;
+  height: 30px;
+  width: var(--w-toggle-switch);
+  background-color: var(--bg-toggle);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pd-toggle-switch);
+  cursor: pointer;
+  transition: background-color 500ms, box-shadow 300ms;
+  border: 1px solid #ece9e2;
+}
+
+.timeToggleCircle {
+  width: var(--w-h-toggle-circle);
+  height: var(--w-h-toggle-circle);
+  background-color: var(--bg-circle);
+  border-radius: 50%;
+  transition: margin 300ms ease-in-out, background-color 600ms;
+}
+
+.timeToggleInput:checked+.timeToggle .timeToggleCircle {
+  margin-left: calc(var(--w-toggle-switch) - (var(--pd-toggle-switch) * 2) - var(--w-h-toggle-circle));
+}
+
+.timeToggleInput:checked+.timeToggle .timeToggleSwitch {
+  --bg-toggle: #c8a96e;
+  --bg-circle: #faf8f5;
+  box-shadow: 0 0.35rem 1.5rem rgba(200, 169, 110, 0.35);
+}
+
+.timeToggleInput:focus-visible+.timeToggle .timeToggleSwitch {
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.25);
+}
+
+/* ── Service grid ──────────────────────────────── */
+.serviceGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.serviceCard {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  background: #faf8f5;
+  border: 2px solid #ece9e2;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  font-family: Arial, sans-serif;
+}
+
+.serviceCard:hover {
+  border-color: #c8a96e;
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.serviceCardSelected {
+  border-color: #c8a96e !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.12);
+}
+
+.serviceCardInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-right: 2rem;
+}
+
+.serviceName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.serviceMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.serviceDuration {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.serviceDuration svg {
+  width: 12px;
+  height: 12px;
+}
+
+.servicePrice {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #c8a96e;
+}
+
+.serviceDesc {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Staff list ────────────────────────────────── */
+.staffList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.staffCard {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  background: #faf8f5;
+  border: 2px solid #ece9e2;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  font-family: Arial, sans-serif;
+}
+
+.staffCard:hover {
+  border-color: #c8a96e;
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.staffCardSelected {
+  border-color: #c8a96e !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.12);
+}
+
+.staffAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c8a96e, #e8c98a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.staffAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.staffAvatar svg {
+  width: 22px;
+  height: 22px;
+}
+
+.staffInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.staffName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.staffRole {
+  font-size: 0.75rem;
+  color: #aaa;
+  text-transform: capitalize;
+}
+
+/* ── Date strip ────────────────────────────────── */
+.dateStrip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+  padding: 0.5rem;
+  background: linear-gradient(180deg, #ffffff 0%, #faf8f5 100%);
+  border: 1px solid #ece9e2;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 15, 15, 0.04);
+}
+
+.dateStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.dateCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.75rem 0.45rem;
+  width: 100%;
+  background: #faf8f5;
+  border: 2px solid #ece9e2;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
+  font-family: Arial, sans-serif;
+}
+
+.dateCell:hover:not(:disabled) {
+  border-color: #c8a96e;
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(15, 15, 15, 0.08);
+}
+
+.dateCell:focus-visible {
+  outline: none;
+  border-color: #c8a96e;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.2);
+}
+
+.dateCellSelected {
+  border-color: #c8a96e !important;
+  background: #0f0f0f !important;
+  box-shadow: 0 12px 24px rgba(15, 15, 15, 0.2);
+}
+
+.dateCellSelected .dateDayLabel,
+.dateCellSelected .dateDayNum,
+.dateCellSelected .dateMonth {
+  color: #fff !important;
+}
+
+.dateCellClosed {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dateDayLabel {
+  font-size: 0.65rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.dateDayNum {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111;
+  font-family: 'Georgia', serif;
+}
+
+.dateMonth {
+  font-size: 0.62rem;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.dateClosed {
+  font-size: 0.7rem;
+  color: #ccc;
+}
+
+@media (max-width: 980px) {
+  .dateStrip {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .dateStrip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dateStrip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .dateCell {
+    padding: 0.7rem 0.35rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .dateStrip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dateCell {
+    padding: 0.65rem 0.3rem;
+  }
+}
+
+/* ── Slot grid ─────────────────────────────────── */
+.slotGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.slotPill {
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 2px solid #ece9e2;
+  background: #faf8f5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  font-family: Arial, sans-serif;
+}
+
+.slotPill:hover {
+  border-color: #c8a96e;
+  background: #fff;
+}
+
+.slotPillSelected {
+  border-color: #c8a96e !important;
+  background: #0f0f0f !important;
+  color: #fff !important;
+}
+
+/* ── Summary ───────────────────────────────────── */
+.summary {
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: Arial, sans-serif;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.summaryLabel {
+  font-size: 0.78rem;
+  color: #aaa;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+
+.summaryValue {
+  font-size: 0.875rem;
+  color: #222;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ── Form ──────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fieldLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-family: Arial, sans-serif;
+}
+
+.fieldInput,
+.fieldTextarea {
+  padding: 0.75rem 1rem;
+  border: 2px solid #ece9e2;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #111;
+  background: #faf8f5;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fieldInput:focus,
+.fieldTextarea:focus {
+  border-color: #c8a96e;
+  background: #fff;
+}
+
+.fieldTextarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.fieldHint {
+  font-size: 0.72rem;
+  color: #bbb;
+  font-family: Arial, sans-serif;
+}
+
+/* ── Selected check ────────────────────────────── */
+.selectedCheck {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #c8a96e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.selectedCheck svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Actions ───────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #0f0f0f;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+  font-family: Arial, sans-serif;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btnPrimary svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btnSecondary {
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  color: #888;
+  border: 2px solid #ece9e2;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: Arial, sans-serif;
+}
+
+.btnSecondary:hover {
+  border-color: #ccc;
+  color: #444;
+}
+
+/* ── States ────────────────────────────────────── */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #999;
+  font-size: 0.875rem;
+  padding: 1.5rem 0;
+  font-family: Arial, sans-serif;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e0ddd7;
+  border-top-color: #c8a96e;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinnerSmall {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty {
+  padding: 1.5rem;
+  text-align: center;
+  color: #bbb;
+  font-size: 0.875rem;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.errorBox {
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-family: Arial, sans-serif;
+}

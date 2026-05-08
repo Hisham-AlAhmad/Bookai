@@ -4,7 +4,37 @@ import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(req) {
+  const { searchParams } = new URL(req.url)
+  const serviceId = searchParams.get('serviceId')
+
+  if (serviceId !== null) {
+    if (!serviceId) {
+      return NextResponse.json({ error: 'serviceId is required' }, { status: 400 })
+    }
+
+    const staffServices = await prisma.staffService.findMany({
+      where: { service_id: serviceId },
+      include: {
+        staff: {
+          select: {
+            id: true,
+            name: true,
+            role: true,
+            avatar_url: true,
+            active: true,
+          },
+        },
+      },
+    })
+
+    const staff = staffServices
+      .map((ss) => ss.staff)
+      .filter((s) => s.active)
+
+    return NextResponse.json({ staff })
+  }
+
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -23,7 +53,7 @@ export async function GET() {
     orderBy: { created_at: 'asc' },
   })
 
-  return NextResponse.json(staff)
+  return NextResponse.json({ staff })
 }
 
 export async function POST(req) {

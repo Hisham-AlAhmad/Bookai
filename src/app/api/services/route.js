@@ -3,7 +3,35 @@ import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(req) {
+  const { searchParams } = new URL(req.url)
+  const slug = searchParams.get('slug')
+
+  if (slug !== null) {
+    if (!slug) {
+      return NextResponse.json({ error: 'slug is required' }, { status: 400 })
+    }
+
+    const business = await prisma.business.findUnique({ where: { slug } })
+    if (!business) {
+      return NextResponse.json({ error: 'Business not found' }, { status: 404 })
+    }
+
+    const services = await prisma.service.findMany({
+      where: { business_id: business.id, active: true },
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        duration_mins: true,
+        price_usd: true,
+      },
+    })
+
+    return NextResponse.json({ services })
+  }
+
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -17,7 +45,7 @@ export async function GET() {
     orderBy: { created_at: 'asc' },
   })
 
-  return NextResponse.json(services)
+  return NextResponse.json({ services })
 }
 
 export async function POST(req) {

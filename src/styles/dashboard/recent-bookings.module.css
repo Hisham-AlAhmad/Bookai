@@ -1,3 +1,97 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.75rem;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 12px;
+}
+
+.timeToggleText {
+  font-size: 0.75rem;
+  color: #6f6a63;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.timeToggleControl {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timeToggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.timeToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #c8a96e;
+  text-shadow: 0 0 2px #e8e8e8;
+  cursor: pointer;
+}
+
+.timeToggleLabel {
+  min-width: 1.4rem;
+  text-align: center;
+}
+
+.timeToggleSwitch {
+  --bg-toggle: #ffffff;
+  --bg-circle: #c8a96e;
+  --w-toggle-switch: 66px;
+  --w-h-toggle-circle: 20px;
+  --pd-toggle-switch: 0.25rem;
+  height: 28px;
+  width: var(--w-toggle-switch);
+  background-color: var(--bg-toggle);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pd-toggle-switch);
+  transition: background-color 500ms, box-shadow 300ms;
+  border: 1px solid #ece9e2;
+}
+
+.timeToggleCircle {
+  width: var(--w-h-toggle-circle);
+  height: var(--w-h-toggle-circle);
+  background-color: var(--bg-circle);
+  border-radius: 50%;
+  transition: margin 300ms ease-in-out, background-color 600ms;
+}
+
+.timeToggleInput:checked+.timeToggle .timeToggleCircle {
+  margin-left: calc(var(--w-toggle-switch) - (var(--pd-toggle-switch) * 2) - var(--w-h-toggle-circle));
+}
+
+.timeToggleInput:checked+.timeToggle .timeToggleSwitch {
+  --bg-toggle: #c8a96e;
+  --bg-circle: #faf8f5;
+  box-shadow: 0 0.35rem 1.5rem rgba(200, 169, 110, 0.35);
+}
+
+.timeToggleInput:focus-visible+.timeToggle .timeToggleSwitch {
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.25);
+}
+
 .tableWrap {
   overflow-x: auto;
   border-radius: 16px;

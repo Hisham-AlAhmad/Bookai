@@ -1,0 +1,118 @@
+/* ── Card ──────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid #ece9e2;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Stepper ───────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  padding: 1.75rem 2rem 0;
+  gap: 0;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stepItem:last-child {
+  flex: 0;
+}
+
+.stepDot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.stepDot svg {
+  width: 14px;
+  height: 14px;
+}
+
+.stepPending {
+  background: #f0ede6;
+  color: #bbb;
+  border: 2px solid #e8e4dc;
+}
+
+.stepActive {
+  background: #0f0f0f;
+  color: #fff;
+  border: 2px solid #0f0f0f;
+  box-shadow: 0 0 0 4px rgba(15, 15, 15, 0.08);
+}
+
+.stepDone {
+  background: #c8a96e;
+  color: #fff;
+  border: 2px solid #c8a96e;
+}
+
+.stepLabel {
+  font-size: 0.68rem;
+  color: #bbb;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.stepLabelActive {
+  color: #333;
+  font-weight: 700;
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background: #ece9e2;
+  margin: 0 4px;
+  transition: background 0.3s ease;
+}
+
+.stepLineDone {
+  background: #c8a96e;
+}
+
+/* ── Step content ──────────────────────────────── */
+.stepContent {
+  padding: 2.5rem 2rem 2rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .stepper {
+    padding: 1.25rem 1.25rem 0;
+  }
+
+  .stepContent {
+    padding: 2rem 1.25rem 1.5rem;
+  }
+
+  .stepLabel {
+    display: none;
+  }
+}
