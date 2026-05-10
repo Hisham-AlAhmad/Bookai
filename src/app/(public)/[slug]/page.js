@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import prisma from '@/lib/prisma'
 import BookingFlow from '@/components/booking/BookingFlow'
+import VoiceBooking from '@/components/voiceBooking/VoiceBooking'
 import styles from '@/styles/booking/public-page.module.css'
 
 async function getBusiness(slug) {
@@ -119,6 +120,8 @@ export default async function PublicBookingPage({ params }) {
           workingHours={business.working_hours}
         />
       </div>
+
+      <VoiceBooking businessId={business.id} businessSlug={business.slug} />
 
     </div>
   )
