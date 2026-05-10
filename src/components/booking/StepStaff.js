@@ -22,7 +22,42 @@ export default function StepStaff({ serviceId, selected, onSelect, onNext, onBac
     loadStaff()
   }, [serviceId])
 
-  if (loading) return <div className={styles.loading}><span className={styles.spinner} />Loading staff...</div>
+  if (loading) {
+    return (
+      <div className={styles.step}>
+        <div className={styles.stepHeader}>
+          <h2 className={styles.stepTitle}>Choose Your Staff</h2>
+          <p className={styles.stepSub}>Pick who you'd like to work with, or leave it to us.</p>
+        </div>
+
+        <div className={styles.staffList}>
+          {/* No preference skeleton */}
+          <div className={styles.staffCard}>
+            <div className={`${styles.skeleton} ${styles.skeletonAvatar}`} />
+            <div className={styles.staffInfo}>
+              <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '45%', height: 14 }} />
+              <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '30%', height: 12 }} />
+            </div>
+          </div>
+
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className={styles.staffCard}>
+              <div className={`${styles.skeleton} ${styles.skeletonAvatar}`} />
+              <div className={styles.staffInfo}>
+                <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '55%', height: 14 }} />
+                <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '35%', height: 12 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.actions}>
+          <div style={{ flex: 1 }} />
+          <div className={styles.skeletonBtn} />
+        </div>
+      </div>
+    )
+  }
   if (!staff.length) return <div className={styles.empty}>No staff available for this service.</div>
 
   return (

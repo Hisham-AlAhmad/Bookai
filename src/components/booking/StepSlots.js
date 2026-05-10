@@ -92,9 +92,17 @@ export default function StepSlots({ businessId, serviceId, staffId, date, select
       </div>
 
       {loading && (
-        <div className={styles.loading}>
-          <span className={styles.spinner} />
-          Checking availability...
+        <div aria-hidden>
+          <div className={styles.skeletonCard} style={{ padding: '8px 0' }}>
+            <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '55%', height: 16 }} />
+            <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '35%', height: 12 }} />
+          </div>
+
+          <div className={styles.slotGrid} style={{ marginTop: '0.25rem' }}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className={`${styles.skeleton} ${styles.skeletonPill}`} style={{ width: 96, height: 36 }} />
+            ))}
+          </div>
         </div>
       )}
 

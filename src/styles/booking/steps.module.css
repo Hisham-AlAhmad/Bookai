@@ -680,3 +680,75 @@
   font-size: 0.85rem;
   font-family: Arial, sans-serif;
 }
+
+/* ── Skeletons ────────────────────────────────── */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #f6f4f0, #efece6, #f6f4f0);
+  border-radius: 8px;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  height: 100%;
+  width: 150%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shimmer 1.2s infinite;
+}
+
+.skeletonLine {
+  height: 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-bottom: 8px;
+}
+
+.skeletonCard {
+  background: transparent;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonMeta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.skeletonAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, #f6f4f0, #efece6, #f6f4f0);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeletonPill {
+  height: 36px;
+  min-width: 80px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f6f4f0, #efece6, #f6f4f0);
+  display: inline-block;
+}
+
+.skeletonBtn {
+  width: 160px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f6f4f0, #efece6, #f6f4f0);
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(150%);
+  }
+}

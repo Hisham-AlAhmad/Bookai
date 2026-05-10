@@ -21,7 +21,35 @@ export default function StepServices({ businessSlug, selected, onSelect, onNext 
     loadServices()
   }, [businessSlug])
 
-  if (loading) return <div className={styles.loading}><span className={styles.spinner} />Loading services...</div>
+  if (loading) {
+    return (
+      <div className={styles.step}>
+        <div className={styles.stepHeader}>
+          <h2 className={styles.stepTitle}>Choose a Service</h2>
+          <p className={styles.stepSub}>What can we help you with today?</p>
+        </div>
+
+        <div className={styles.serviceGrid}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className={styles.serviceCard} aria-hidden>
+              <div className={styles.serviceCardInner}>
+                <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '62%', height: 18 }} />
+                <div className={styles.skeletonMeta} style={{ marginTop: 6 }}>
+                  <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '26%', height: 12 }} />
+                  <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '18%', height: 12 }} />
+                </div>
+                <div style={{ marginTop: 6 }} className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '78%', height: 12 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.actions}>
+          <div className={styles.skeletonBtn} />
+        </div>
+      </div>
+    )
+  }
   if (!services.length) return <div className={styles.empty}>No services available yet.</div>
 
   return (
