@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import styles from '@/styles/dashboard/services.module.css'
 
 export default function ServiceCard({ service, canManage, onEdit, onToggleActive }) {
@@ -7,6 +8,58 @@ export default function ServiceCard({ service, canManage, onEdit, onToggleActive
   const durationLabel = hours > 0
     ? `${hours}h${mins > 0 ? ` ${mins}m` : ''}`
     : `${mins}m`
+
+  const [staffList, setStaffList] = useState([])
+  const [loadingStaff, setLoadingStaff] = useState(true)
+  const [toggling, setToggling] = useState({})
+
+  useEffect(() => {
+    let mounted = true
+    async function fetchStaff() {
+      try {
+        const res = await fetch('/api/staff')
+        if (!res.ok) return
+        const data = await res.json()
+        if (mounted) setStaffList(data.staff || [])
+      } catch (e) {
+        // ignore
+      } finally {
+        if (mounted) setLoadingStaff(false)
+      }
+    }
+    fetchStaff()
+    return () => { mounted = false }
+  }, [])
+
+  function isAssigned(member) {
+    return member.services?.some((s) => s.service?.id === service.id)
+  }
+
+  async function toggleAssign(member) {
+    const assigned = isAssigned(member)
+    const currentIds = member.services?.map((s) => s.service.id) || []
+    const newIds = assigned ? currentIds.filter((id) => id !== service.id) : [...currentIds, service.id]
+
+    setToggling((p) => ({ ...p, [member.id]: true }))
+    const res = await fetch(`/api/staff/${member.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ service_ids: newIds }),
+    })
+
+    if (res.ok) {
+      setStaffList((prev) =>
+        prev.map((m) =>
+          m.id === member.id ? { ...m, services: newIds.map((id) => ({ service: { id } })) } : m
+        )
+      )
+    } else {
+      const err = await res.json().catch(() => ({}))
+      alert(err.error || 'Failed to update staff assignments')
+    }
+
+    setToggling((p) => ({ ...p, [member.id]: false }))
+  }
 
   return (
     <div className={`${styles.card} ${!service.active ? styles.cardInactive : ''}`}>
@@ -45,6 +98,34 @@ export default function ServiceCard({ service, canManage, onEdit, onToggleActive
             </svg>
             ${Number(service.price_usd).toFixed(0)}
           </span>
+        )}
+      </div>
+
+      <div className={styles.cardStaff}>
+        <div className={styles.staffHeader}>Staff</div>
+        {loadingStaff ? (
+          <div className={styles.staffLoading}>Loading...</div>
+        ) : staffList.length ? (
+          staffList.map((member) => (
+            <div key={member.id} className={styles.staffRow}>
+              <div className={styles.staffLeft}>
+                <div className={styles.staffInfo}>
+                  <div className={styles.staffName}>{member.name}</div>
+                </div>
+              </div>
+              {canManage && (
+                <button
+                  className={isAssigned(member) ? styles.assignedBtn : styles.assignBtn}
+                  onClick={() => toggleAssign(member)}
+                  disabled={Boolean(toggling[member.id])}
+                >
+                  {toggling[member.id] ? '...' : isAssigned(member) ? 'Unassign' : 'Assign'}
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className={styles.noStaff}>No staff yet.</div>
         )}
       </div>
 

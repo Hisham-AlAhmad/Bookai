@@ -236,3 +236,70 @@
     border-radius: 16px;
     border: 1px solid #ece9e2;
 }
+
+/* ── Staff list inside card ────────────────────── */
+.cardStaff {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f5f2ee;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.staffHeader {
+    font-size: 0.82rem;
+    color: #777;
+    font-weight: 600;
+}
+
+.staffRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.staffLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.staffInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.staffName {
+    font-size: 0.9rem;
+    color: #222;
+    font-weight: 600;
+}
+
+.assignBtn,
+.assignedBtn {
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.assignBtn {
+    background: color-mix(in srgb, #111 6%, transparent);
+    color: #111;
+}
+
+.assignBtn:hover { opacity: 0.9 }
+
+.assignedBtn {
+    background: color-mix(in srgb, #22c55e 12%, transparent);
+    color: #166534;
+}
+
+.staffLoading, .noStaff {
+    color: #999;
+    font-size: 0.85rem;
+}
