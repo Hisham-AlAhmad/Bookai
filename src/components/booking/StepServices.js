@@ -38,7 +38,7 @@ export default function StepServices({ businessSlug, selected, onSelect, onNext 
                   <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '26%', height: 12 }} />
                   <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '18%', height: 12 }} />
                 </div>
-                <div style={{ marginTop: 6 }} className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '78%', height: 12 }} />
+                <div className={`${styles.skeleton} ${styles.skeletonLine}`} style={{ width: '78%', height: 12, marginTop: 6 }} />
               </div>
             </div>
           ))}
