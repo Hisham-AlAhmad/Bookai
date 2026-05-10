@@ -9,28 +9,48 @@ import styles from '@/styles/booking/voice-button.module.css'
  * Floating mic button that captures voice via the Web Speech API.
  * On transcript ready, calls onTranscript(text).
  *
+ * Supports Arabic (ar-LB, ar-SA, ar) and English (en-US, en-GB, en).
+ * When lang is not explicitly provided, it auto-detects from browser
+ * preferences and picks the best supported locale.
+ *
  * Props:
  *   onTranscript(text: string) — called with the final transcript
  *   disabled?: boolean
- *   lang?: string (e.g. 'en-US', 'ar-SA')
+ *   lang?: string (e.g. 'en-US', 'ar-SA') — overrides auto-detection
+ */
+
+// Map common Arabic locale codes to the best SpeechRecognition locale
+const ARABIC_LOCALES = ['ar-SA', 'ar-LB', 'ar-EG', 'ar-AE', 'ar-JO', 'ar']
+
+/**
+ * Resolves the best speech recognition language.
+ * Priority:
+ *  1. Explicit lang prop
+ *  2. First Arabic or English browser language preference
+ *  3. Falls back to 'ar-SA' if browser is Arabic, else 'en-US'
+ *
+ * Using 'ar-SA' works broadly across Arabic dialects in the Web Speech API.
  */
 function resolveSpeechLang(lang) {
   if (lang) return lang
 
-  if (typeof navigator !== 'undefined') {
-    const preferredLanguages = [
-      ...(navigator.languages || []),
-      navigator.language,
-    ].filter(Boolean)
+  if (typeof navigator === 'undefined') return 'ar-SA'
 
-    const arabicOrEnglish = preferredLanguages.find((value) =>
-      /^ar(-|$)/i.test(value) || /^en(-|$)/i.test(value)
-    )
+  const preferredLanguages = [
+    ...(navigator.languages || []),
+    navigator.language,
+  ].filter(Boolean)
 
-    if (arabicOrEnglish) return arabicOrEnglish
+  for (const pref of preferredLanguages) {
+    const lower = pref.toLowerCase()
+    // Arabic: use ar-SA which has the broadest dialect coverage in WebSpeech
+    if (lower.startsWith('ar')) return 'ar-SA'
+    // English variants — keep as-is
+    if (lower.startsWith('en')) return pref
   }
 
-  return 'en-US'
+  // Default: Arabic-first since the project targets Lebanese/MENA businesses
+  return 'ar-SA'
 }
 
 export default function VoiceButton({ onTranscript, disabled = false, lang }) {
@@ -39,6 +59,10 @@ export default function VoiceButton({ onTranscript, disabled = false, lang }) {
   const [supported, setSupported] = useState(true)
   const recognitionRef = useRef(null)
   const finalTranscriptRef = useRef('')
+  // Keep track of interim so we can display it as the user speaks
+  const interimRef = useRef('')
+
+  const resolvedLang = resolveSpeechLang(lang)
 
   useEffect(() => {
     const SpeechRecognition =
@@ -51,20 +75,27 @@ export default function VoiceButton({ onTranscript, disabled = false, lang }) {
     }
 
     const recognition = new SpeechRecognition()
-    recognition.lang = resolveSpeechLang(lang)
+
+    // ── Language configuration ────────────────────────────────────────────
+    recognition.lang = resolvedLang
+    // continuous: false gives us a clean single utterance per tap
     recognition.continuous = false
+    // interimResults: true lets us show live feedback while the user speaks
     recognition.interimResults = true
+    // maxAlternatives: keep 1 for determinism
     recognition.maxAlternatives = 1
 
     recognition.onstart = () => {
       setState('listening')
       finalTranscriptRef.current = ''
+      interimRef.current = ''
       setErrorMsg('')
     }
 
     recognition.onresult = (event) => {
       let interim = ''
       let final = ''
+
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const result = event.results[i]
         if (result.isFinal) {
@@ -73,7 +104,12 @@ export default function VoiceButton({ onTranscript, disabled = false, lang }) {
           interim += result[0].transcript
         }
       }
-      if (final) finalTranscriptRef.current = final
+
+      if (final) {
+        // Append to any previously finalized text (in case of multiple final events)
+        finalTranscriptRef.current = (finalTranscriptRef.current + ' ' + final).trim()
+      }
+      interimRef.current = interim
     }
 
     recognition.onend = () => {
@@ -82,19 +118,34 @@ export default function VoiceButton({ onTranscript, disabled = false, lang }) {
         setState('processing')
         onTranscript(transcript)
       } else {
+        // Nothing was captured — go back to idle so user can retry
         setState('idle')
       }
     }
 
     recognition.onerror = (event) => {
-      const msg =
-        event.error === 'no-speech'
-          ? 'No speech detected. Please try again.'
-          : event.error === 'not-allowed'
-            ? 'Microphone access denied. Please allow microphone permission.'
-            : event.error === 'network'
-              ? 'Network error during recognition.'
-              : `Error: ${event.error}`
+      let msg
+      switch (event.error) {
+        case 'no-speech':
+          msg = 'No speech detected. Please try again.'
+          break
+        case 'not-allowed':
+        case 'permission-denied':
+          msg = 'Microphone access denied. Please allow microphone permission.'
+          break
+        case 'network':
+          msg = 'Network error during recognition. Please check your connection.'
+          break
+        case 'audio-capture':
+          msg = 'No microphone found. Please connect a microphone.'
+          break
+        case 'aborted':
+          // User or code aborted — silent, go back to idle
+          setState('idle')
+          return
+        default:
+          msg = `Recognition error: ${event.error}. Please try again.`
+      }
       setErrorMsg(msg)
       setState('error')
     }
@@ -102,39 +153,48 @@ export default function VoiceButton({ onTranscript, disabled = false, lang }) {
     recognitionRef.current = recognition
 
     return () => {
-      recognition.abort()
+      try {
+        recognition.abort()
+      } catch {
+        // ignore abort errors on cleanup
+      }
     }
-  }, [lang, onTranscript])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resolvedLang]) // re-init when language changes
+
+  // Separately update the onTranscript callback ref to avoid stale closures
+  // without reinitialising the recognition engine
+  const onTranscriptRef = useRef(onTranscript)
+  useEffect(() => {
+    onTranscriptRef.current = onTranscript
+  }, [onTranscript])
 
   const handleClick = useCallback(() => {
     if (disabled) return
 
     if (state === 'listening') {
-      recognitionRef.current?.stop()
+      // Tap again to stop — triggers onend which processes the transcript
+      try {
+        recognitionRef.current?.stop()
+      } catch {
+        setState('idle')
+      }
       return
     }
 
     if (state === 'idle' || state === 'error') {
       setState('idle')
       setErrorMsg('')
+      finalTranscriptRef.current = ''
+      interimRef.current = ''
       try {
         recognitionRef.current?.start()
-      } catch {
+      } catch (err) {
         setErrorMsg('Could not start microphone. Please try again.')
         setState('error')
       }
     }
   }, [state, disabled])
-
-  // Allow parent to reset state (e.g. after processing completes)
-  useEffect(() => {
-    if (disabled === false && state === 'processing') {
-      // keep processing state until parent changes something
-    }
-  }, [disabled, state])
-
-  // Expose reset method via ref or effect
-  const resetToIdle = useCallback(() => setState('idle'), [])
 
   if (!supported) return null
 

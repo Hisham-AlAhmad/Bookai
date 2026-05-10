@@ -2,7 +2,7 @@
    voice-button.module.css
    Styles for: VoiceButton, VoiceTranscriptBubble,
                VoiceClarificationForm, VoiceSlotPicker,
-               VoiceBookingFlow
+               VoiceBookingFlow, VoiceBookingTrigger
    ──────────────────────────────────────────────── */
 
 /* ── Flow wrapper (modal/panel) ──────────────── */
@@ -231,6 +231,9 @@
   color: #333;
   line-height: 1.5;
   transition: border-color 0.2s;
+  /* RTL support for Arabic text */
+  direction: auto;
+  unicode-bidi: plaintext;
 }
 
 .bubbleListening {
@@ -250,6 +253,10 @@
 .bubbleText {
   flex: 1;
   font-style: italic;
+  /* Allow Arabic text to display RTL naturally */
+  direction: auto;
+  unicode-bidi: plaintext;
+  text-align: start;
 }
 
 .bubblePlaceholder {
@@ -373,6 +380,9 @@
   font-size: 0.78rem;
   color: #16a34a;
   font-weight: 500;
+  /* Allow Arabic within badge */
+  direction: auto;
+  unicode-bidi: plaintext;
 }
 
 .clarifyField {
@@ -658,7 +668,7 @@
   color: #555;
 }
 
-/* ── Floating trigger button (used in BookingFlow) ── */
+/* ── Floating trigger button ─────────────────── */
 .floatingTrigger {
   position: fixed;
   bottom: 2rem;
@@ -691,34 +701,98 @@
   height: 18px;
 }
 
-/* ── Overlay panel (modal mode) ──────────────── */
+/* ── Overlay (modal backdrop) ────────────────────────────────────────────────
+   Opening: overlayIn (fade in) + panelUp (slide up + scale in)
+   Closing:  overlayClosing (fade out) + overlayPanelClosing (slide down + scale out)
+
+   The CLOSE animations are the exact mirror of the OPEN animations so
+   the experience feels symmetrical and polished.
+   Duration = CLOSE_ANIMATION_MS in VoiceBookingTrigger.js (280ms).
+   ──────────────────────────────────────────────────────────────────────────── */
 .overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   z-index: 150;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: 1rem;
-  animation: overlayIn 0.2s ease;
+  /* Opening animation */
+  animation: overlayIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Closing state — plays the reverse animation */
+.overlayClosing {
+  animation: overlayOut 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .overlayPanel {
   width: 100%;
   max-width: 480px;
-  animation: panelUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Opening animation: slide up from 30px below + subtle scale-in */
+  animation: panelUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
+/* Closing state — mirrors the open animation in reverse */
+.overlayPanelClosing {
+  animation: panelDown 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Keyframes ───────────────────────────────── */
+
+/* Backdrop open */
 @keyframes overlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
 }
 
+/* Backdrop close — exact reverse */
+@keyframes overlayOut {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+}
+
+/* Panel open — slide up + spring scale */
 @keyframes panelUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(36px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Panel close — exact mirror: slide down + scale out */
+@keyframes panelDown {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(36px) scale(0.96);
+    opacity: 0;
+  }
 }
 
 @media (max-width: 600px) {
@@ -727,5 +801,10 @@
     right: 1.25rem;
     padding: 0.65rem 1rem;
     font-size: 0.8rem;
+  }
+
+  .overlay {
+    padding: 0.75rem;
+    align-items: flex-end;
   }
 }
