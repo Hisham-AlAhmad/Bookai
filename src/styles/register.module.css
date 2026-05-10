@@ -1,0 +1,929 @@
+/* ── Page wrapper ─────────────────────────────── */
+.wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+}
+
+/* ── Brand panel (left) ───────────────────────── */
+.brandPanel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: linear-gradient(155deg, #141414 0%, #0c0c0c 55%, #17130c 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 2.75rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.brandPanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 14% 18%, rgba(200, 169, 110, 0.32), transparent 60%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.brandTop {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
+}
+
+.brandLogo {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+.brandCaption {
+  font-size: 0.82rem;
+  color: rgba(245, 241, 232, 0.65);
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.brandBody {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.headline {
+  font-size: 2.15rem;
+  font-weight: 700;
+  color: #f5f1e8;
+  margin: 0;
+  letter-spacing: -0.6px;
+  line-height: 1.2;
+  font-family: 'Georgia', serif;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(245, 241, 232, 0.72);
+  margin: 0;
+  max-width: 380px;
+  font-family: Arial, sans-serif;
+}
+
+.featureList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.9rem;
+  color: rgba(245, 241, 232, 0.85);
+  font-family: Arial, sans-serif;
+}
+
+.featureIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(200, 169, 110, 0.25);
+  border: 1px solid rgba(200, 169, 110, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #c8a96e;
+}
+
+.featureIcon svg {
+  width: 11px;
+  height: 11px;
+}
+
+.loginPrompt {
+  position: relative;
+  z-index: 1;
+  font-size: 0.85rem;
+  color: rgba(245, 241, 232, 0.5);
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.loginLink {
+  color: #c8a96e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+.loginLink:hover {
+  color: #e8c98a;
+}
+
+/* ── Form panel (right) ───────────────────────── */
+.formPanel {
+  background: #f8f7f4;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.pageInner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 5rem;
+}
+
+/* ── Stepper ──────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.stepItem {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.stepItem:last-child {
+  flex: 0;
+}
+
+.stepDot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.stepDot svg {
+  width: 14px;
+  height: 14px;
+}
+
+.stepPending {
+  background: #f0ede6;
+  color: #bbb;
+  border: 2px solid #e8e4dc;
+}
+
+.stepActive {
+  background: #0f0f0f;
+  color: #fff;
+  border: 2px solid #0f0f0f;
+  box-shadow: 0 0 0 4px rgba(15, 15, 15, 0.08);
+}
+
+.stepDone {
+  background: #c8a96e;
+  color: #fff;
+  border: 2px solid #c8a96e;
+}
+
+.stepLabel {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  color: #bbb;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.stepLabelActive {
+  color: #333;
+  font-weight: 700;
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background: #ece9e2;
+  margin: 0 4px;
+  transition: background 0.3s ease;
+}
+
+.stepLineDone {
+  background: #c8a96e;
+}
+
+/* ── Step shell ───────────────────────────────── */
+.stepWrap {
+  margin-top: 1.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.stepHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.stepTitle {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.5px;
+  font-family: 'Georgia', serif;
+}
+
+.stepSub {
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* ── Plan grid ────────────────────────────────── */
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.planCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.35rem;
+  background: #fff;
+  border: 2px solid #ece9e2;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.planCard:hover {
+  border-color: #c8a96e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.planCardSelected {
+  border-color: #c8a96e !important;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15) !important;
+}
+
+.planCardHighlight {
+  background: linear-gradient(145deg, #fefcf8, #fdf8ef);
+  border-color: color-mix(in srgb, #c8a96e 40%, transparent);
+}
+
+.planBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  background: linear-gradient(135deg, #c8a96e, #e8c98a);
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  align-self: flex-start;
+}
+
+.planCardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.planName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  font-family: 'Georgia', serif;
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
+.planAmount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111;
+  font-family: 'Georgia', serif;
+  letter-spacing: -0.8px;
+}
+
+.planPeriod {
+  font-size: 0.78rem;
+  color: #aaa;
+}
+
+.planTagline {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 0.1rem 0 0;
+}
+
+.planFeatures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.planFeatureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #555;
+  line-height: 1.3;
+}
+
+.planFeatureItem svg {
+  width: 13px;
+  height: 13px;
+  color: #22c55e;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.planSelectedBadge {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #c8a96e;
+  padding: 0.3rem 0;
+  border-top: 1px solid #ece9e2;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* ── Form grid ────────────────────────────────── */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+.formGridFull {
+  grid-column: 1 / -1;
+}
+
+.ownerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* ── Fields ───────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fieldMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fieldLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-family: Arial, sans-serif;
+}
+
+.fieldInput {
+  padding: 0.7rem 0.95rem;
+  border: 1px solid #e5e0d8;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #111;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fieldInput:focus {
+  border-color: #c8a96e;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.14);
+}
+
+.fieldInputError {
+  border-color: #ef4444;
+}
+
+.fieldInputError:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.fieldInputSuccess {
+  border-color: #22c55e;
+}
+
+.fieldInputSuccess:focus {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+.fieldSelect {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.fieldTextarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.fieldHint {
+  font-size: 0.72rem;
+  color: #aaa;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.fieldError {
+  font-size: 0.72rem;
+  color: #ef4444;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.fieldSuccess {
+  font-size: 0.72rem;
+  color: #22c55e;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.charCount {
+  font-size: 0.72rem;
+  color: #bbb;
+  font-weight: 500;
+  font-family: Arial, sans-serif;
+}
+
+.charCountWarn {
+  color: #ef4444;
+}
+
+/* ── Phone row ────────────────────────────────── */
+.phoneRow {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.phoneCountry {
+  flex: 0 0 130px;
+}
+
+.phoneInput {
+  flex: 1;
+}
+
+/* ── Slug preview ─────────────────────────────── */
+.slugPreview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: 'Georgia', serif;
+}
+
+.slugPreview svg {
+  width: 14px;
+  height: 14px;
+  color: #c8a96e;
+  flex-shrink: 0;
+}
+
+.slugDomain {
+  color: #bbb;
+  flex-shrink: 0;
+}
+
+.slugValue {
+  color: #c8a96e;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+/* ── Assets upload ────────────────────────────── */
+.assetsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.coverUploadWrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f0ede6;
+  border: 2px dashed #d4cfc7;
+  transition: border-color 0.2s;
+}
+
+.coverUploadWrap:hover {
+  border-color: #c8a96e;
+}
+
+.coverPreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #bbb;
+  font-family: Arial, sans-serif;
+}
+
+.coverPlaceholder svg {
+  width: 32px;
+  height: 32px;
+}
+
+.coverPlaceholder span {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.coverPlaceholderSub {
+  font-size: 0.72rem !important;
+  color: #ccc !important;
+}
+
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
+
+.coverOverlay svg {
+  width: 18px;
+  height: 18px;
+}
+
+.coverUploadWrap:hover .coverOverlay {
+  opacity: 1;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.logoUploadWrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #e8c98a, #c8a96e);
+  border: 2px dashed #d4cfc7;
+  transition: border-color 0.2s;
+}
+
+.logoUploadWrap:hover {
+  border-color: #c8a96e;
+}
+
+.logoPreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logoFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f0f0f;
+  font-family: 'Georgia', serif;
+}
+
+.logoOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: #fff;
+}
+
+.logoOverlay svg {
+  width: 20px;
+  height: 20px;
+}
+
+.logoUploadWrap:hover .logoOverlay {
+  opacity: 1;
+}
+
+.logoUploadInfo {
+  flex: 1;
+}
+
+.logoUploadLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  margin: 0 0 0.25rem;
+  font-family: Arial, sans-serif;
+}
+
+.logoUploadHint {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin: 0;
+  line-height: 1.4;
+  font-family: Arial, sans-serif;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* ── Password input row ───────────────────────── */
+.passwordRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordRow .fieldInput {
+  padding-right: 2.75rem;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.passwordToggle:hover {
+  color: #555;
+}
+
+.passwordToggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Error box ────────────────────────────────── */
+.errorBox {
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.4;
+}
+
+/* ── Actions ──────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.25rem;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #0f0f0f;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+  font-family: Arial, sans-serif;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btnPrimary svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btnSecondary {
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  color: #888;
+  border: 2px solid #ece9e2;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: Arial, sans-serif;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  border-color: #ccc;
+  color: #444;
+}
+
+.btnSecondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ──────────────────────────────────── */
+.spinnerSmall {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ───────────────────────────────── */
+@media (max-width: 1100px) {
+  .wrapper {
+    grid-template-columns: 1fr 1.6fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .brandPanel {
+    position: static;
+    height: auto;
+    padding: 2rem 1.75rem;
+  }
+
+  .headline {
+    font-size: 1.65rem;
+  }
+
+  .planGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pageInner {
+    padding: 2rem 1.5rem 4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formGridFull {
+    grid-column: 1;
+  }
+
+  .stepper {
+    margin-bottom: 2rem;
+  }
+
+  .stepLabel {
+    display: none;
+  }
+
+  .pageInner {
+    padding: 1.5rem 1.1rem 3rem;
+  }
+
+  .brandPanel {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

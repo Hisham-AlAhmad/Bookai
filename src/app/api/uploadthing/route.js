@@ -16,16 +16,18 @@ const router = {
   })
     .middleware(async () => {
       const session = await getServerSession(authOptions)
-      if (!session || session.user.role !== 'owner') {
+      if (session && session.user.role !== 'owner') {
         throw new UploadThingError('Unauthorized')
       }
 
-      return { userId: session.user.id, businessId: session.user.businessId }
+      return session
+        ? { userId: session.user.id, businessId: session.user.businessId }
+        : { userId: null, businessId: null }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       return {
-        uploadedBy: metadata.userId,
-        businessId: metadata.businessId,
+        uploadedBy: metadata?.userId ?? null,
+        businessId: metadata?.businessId ?? null,
         url: file.url,
         key: file.key,
       }
