@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import StepServices from './StepServices'
 import StepStaff from './StepStaff'
 import StepDate from './StepDate'
@@ -11,7 +11,7 @@ import styles from '@/styles/booking/booking-flow.module.css'
 
 const STEPS = ['Service', 'Staff', 'Date', 'Time', 'Your Info']
 
-export default function BookingFlow({ businessSlug, businessId, workingHours }) {
+export default function BookingFlow({ businessSlug, businessId, workingHours, services = [], externalSlotSelection = null }) {
   const [step, setStep] = useState(0)
   // Highest step the user has legitimately reached; used to lock future steps.
   const [maxStep, setMaxStep] = useState(0)
@@ -114,6 +114,43 @@ export default function BookingFlow({ businessSlug, businessId, workingHours }) 
       setLoading(false)
     }
   }
+
+  // Respond to externally-provided slot selections (e.g. from voice trigger).
+  useEffect(() => {
+    const handle = (selection) => {
+      const { slot, intent } = selection || {}
+      if (!slot && !intent) return
+
+      const resolvedService = (intent?.resolvedServiceId && services?.find(s => s.id === intent.resolvedServiceId))
+        || (intent?.resolvedServiceId ? { id: intent.resolvedServiceId, name: intent?.resolvedServiceName } : null)
+
+      if (resolvedService) select('service', resolvedService)
+
+      if (intent?.preferredDate) select('date', intent.preferredDate)
+      else if (slot?.starts_at) select('date', slot.starts_at.slice(0, 10))
+
+      if (slot) select('slot', slot)
+
+      setMaxStep(4)
+      setStep(4)
+    }
+
+    // prop-based external selection
+    if (externalSlotSelection) handle(externalSlotSelection)
+
+    // also support window-level custom event 'voice-slot-selected' for ease of integration
+    function onWindowEvent(e) {
+      handle(e.detail)
+    }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('voice-slot-selected', onWindowEvent)
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('voice-slot-selected', onWindowEvent)
+      }
+    }
+  }, [externalSlotSelection, services])
 
   // ── Confirmed state ──────────────────────────────
   if (confirmed) {

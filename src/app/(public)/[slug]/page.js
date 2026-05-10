@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import prisma from '@/lib/prisma'
-import BookingFlow from '@/components/booking/BookingFlow'
-import VoiceBooking from '@/components/voiceBooking/VoiceBooking'
+import PublicBookingClient from '@/components/booking/PublicBookingClient'
 import styles from '@/styles/booking/public-page.module.css'
 
 async function getBusiness(slug) {
@@ -9,6 +8,7 @@ async function getBusiness(slug) {
     where: { slug },
     include: {
       working_hours: true,
+      services: true,
     },
   })
   return business
@@ -114,14 +114,13 @@ export default async function PublicBookingPage({ params }) {
 
       {/* ── Booking Flow ── */}
       <div className={styles.bookingSection}>
-        <BookingFlow
+        <PublicBookingClient
           businessSlug={business.slug}
           businessId={business.id}
           workingHours={business.working_hours}
+          services={business.services}
         />
       </div>
-
-      <VoiceBooking businessId={business.id} businessSlug={business.slug} />
 
     </div>
   )

@@ -1,0 +1,731 @@
+/* ────────────────────────────────────────────────
+   voice-button.module.css
+   Styles for: VoiceButton, VoiceTranscriptBubble,
+               VoiceClarificationForm, VoiceSlotPicker,
+               VoiceBookingFlow
+   ──────────────────────────────────────────────── */
+
+/* ── Flow wrapper (modal/panel) ──────────────── */
+.flowWrap {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #ece9e2;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(15, 15, 15, 0.1);
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.flowHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0ede6;
+  background: #faf8f5;
+}
+
+.flowHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.flowHeaderDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c8a96e;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.2);
+}
+
+.flowHeaderTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.1px;
+}
+
+.flowClose {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #f0ede6;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: background 0.15s, color 0.15s;
+}
+
+.flowClose:hover {
+  background: #ece9e2;
+  color: #111;
+}
+
+.flowClose svg {
+  width: 14px;
+  height: 14px;
+}
+
+.flowBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.flowHint {
+  font-size: 0.875rem;
+  color: #999;
+  text-align: center;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.flowHint em {
+  color: #c8a96e;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ── Mic button ──────────────────────────────── */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 2rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  outline: none;
+  min-width: 160px;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.35);
+}
+
+/* Idle */
+.btn_idle {
+  background: #0f0f0f;
+  color: #f5f1e8;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.2);
+}
+
+.btn_idle:hover {
+  background: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 15, 15, 0.25);
+}
+
+/* Listening */
+.btn_listening {
+  background: linear-gradient(135deg, #c8a96e, #e8c98a);
+  color: #0f0f0f;
+  box-shadow: 0 8px 28px rgba(200, 169, 110, 0.45);
+  transform: scale(1.04);
+}
+
+/* Processing */
+.btn_processing {
+  background: #f5f2ee;
+  color: #aaa;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn_processing svg {
+  animation: spin 0.9s linear infinite;
+}
+
+/* Error */
+.btn_error {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  box-shadow: none;
+}
+
+.btn_error:hover {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+/* Pulse rings for listening */
+.ring1,
+.ring2 {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid rgba(200, 169, 110, 0.5);
+  animation: pulse 1.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.ring2 {
+  animation-delay: 0.5s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: #dc2626;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  border-radius: 8px;
+  padding: 0.55rem 0.875rem;
+  text-align: center;
+  max-width: 280px;
+}
+
+/* ── Transcript bubble ───────────────────────── */
+.bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.875rem 1rem;
+  background: #faf8f5;
+  border: 1px solid #ece9e2;
+  border-radius: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.88rem;
+  color: #333;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+}
+
+.bubbleListening {
+  border-color: #c8a96e;
+  background: rgba(200, 169, 110, 0.04);
+}
+
+.bubbleQuote {
+  font-size: 1.4rem;
+  color: #c8a96e;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -2px;
+  font-family: Georgia, serif;
+}
+
+.bubbleText {
+  flex: 1;
+  font-style: italic;
+}
+
+.bubblePlaceholder {
+  color: #bbb;
+  font-style: italic;
+}
+
+/* ── Processing row ──────────────────────────── */
+.processingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #999;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0ddd7;
+  border-top-color: #c8a96e;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.processingText {
+  color: #999;
+  font-size: 0.875rem;
+}
+
+/* ── Error box ───────────────────────────────── */
+.errorBox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #dc2626;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.retryBtn {
+  padding: 0.6rem 1.5rem;
+  background: #0f0f0f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.retryBtn:hover {
+  background: #c8a96e;
+}
+
+/* ── Clarification form ──────────────────────── */
+.clarifyWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.clarifyHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.clarifyIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(200, 169, 110, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8a96e;
+  flex-shrink: 0;
+}
+
+.clarifyIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.clarifyTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 0.15rem;
+  letter-spacing: -0.2px;
+}
+
+.clarifySubtitle {
+  font-size: 0.8rem;
+  color: #999;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.understoodBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.clarifyField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.clarifyLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Service chips */
+.serviceChips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.serviceChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.875rem;
+  background: #faf8f5;
+  border: 2px solid #ece9e2;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+
+.serviceChip:hover {
+  border-color: #c8a96e;
+  background: #fff;
+}
+
+.serviceChipActive {
+  border-color: #c8a96e !important;
+  background: rgba(200, 169, 110, 0.06) !important;
+}
+
+.serviceChipName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.serviceChipMeta {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+/* Date strip (horizontal scroll) */
+.dateStrip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+
+.dateStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.dateChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.6rem 0.75rem;
+  background: #faf8f5;
+  border: 2px solid #ece9e2;
+  border-radius: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 52px;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+
+.dateChip:hover {
+  border-color: #c8a96e;
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.dateChipActive {
+  border-color: #c8a96e !important;
+  background: #0f0f0f !important;
+}
+
+.dateChipActive .dateChipDay,
+.dateChipActive .dateChipNum,
+.dateChipActive .dateChipMonth {
+  color: #fff !important;
+}
+
+.dateChipDay {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.dateChipNum {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  font-family: Georgia, serif;
+}
+
+.dateChipMonth {
+  font-size: 0.55rem;
+  color: #bbb;
+  text-transform: uppercase;
+}
+
+/* Clarify actions */
+.clarifyActions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.clarifyCancel {
+  flex: 1;
+  padding: 0.65rem;
+  background: transparent;
+  border: 1px solid #e5e0d8;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.clarifyCancel:hover {
+  background: #f5f2ee;
+}
+
+.clarifyConfirm {
+  flex: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem;
+  background: #0f0f0f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  font-family: inherit;
+}
+
+.clarifyConfirm:hover:not(:disabled) {
+  background: #c8a96e;
+}
+
+.clarifyConfirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Slot picker ─────────────────────────────── */
+.slotPickerWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.slotPickerHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.slotPickerIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(200, 169, 110, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8a96e;
+  flex-shrink: 0;
+}
+
+.slotPickerIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.slotPickerTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 0.15rem;
+  letter-spacing: -0.2px;
+}
+
+.slotPickerSubtitle {
+  font-size: 0.8rem;
+  color: #999;
+  margin: 0;
+}
+
+.slotPickerHint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.slotGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.slotPill {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 2px solid #ece9e2;
+  background: #faf8f5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  font-family: Arial, inherit;
+}
+
+.slotPill:hover {
+  border-color: #c8a96e;
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.slotPickerEmpty {
+  text-align: center;
+  padding: 1.25rem;
+  color: #aaa;
+  font-size: 0.875rem;
+  background: #faf8f5;
+  border-radius: 12px;
+  border: 1px solid #ece9e2;
+}
+
+.slotPickerBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 0.8rem;
+  color: #aaa;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s;
+  align-self: flex-start;
+}
+
+.slotPickerBack:hover {
+  color: #555;
+}
+
+/* ── Floating trigger button (used in BookingFlow) ── */
+.floatingTrigger {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #0f0f0f;
+  color: #f5f1e8;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(15, 15, 15, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  z-index: 50;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.floatingTrigger:hover {
+  background: #c8a96e;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(200, 169, 110, 0.35);
+}
+
+.floatingTrigger svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Overlay panel (modal mode) ──────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
+  z-index: 150;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  animation: overlayIn 0.2s ease;
+}
+
+.overlayPanel {
+  width: 100%;
+  max-width: 480px;
+  animation: panelUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes panelUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .floatingTrigger {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+  }
+}
