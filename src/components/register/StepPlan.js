@@ -1,12 +1,12 @@
 import { PLAN_CONFIG } from '@/components/register/RegisterConstants'
 import styles from '@/styles/register.module.css'
 
-export default function StepPlan({ selected, onSelect, onNext }) {
+export default function StepPlan({ selected, onSelect, onNext, onBack }) {
   return (
     <div className={styles.step}>
       <div className={styles.stepHeader}>
         <h2 className={styles.stepTitle}>Choose Your Plan</h2>
-        <p className={styles.stepSub}>Start free, upgrade any time. No credit card required for the Free plan.</p>
+        <p className={styles.stepSub}>You can start with the Free plan and change it later. No credit card required for the Free plan.</p>
       </div>
 
       <div className={styles.planGrid}>
@@ -55,6 +55,10 @@ export default function StepPlan({ selected, onSelect, onNext }) {
       </div>
 
       <div className={styles.actions}>
+        <button type="button" className={styles.btnSecondary} onClick={onBack}>
+          Back
+        </button>
+
         <button className={styles.btnPrimary} onClick={onNext}>
           Continue with {PLAN_CONFIG[selected]?.name}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

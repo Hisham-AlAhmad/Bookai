@@ -46,7 +46,7 @@ export const PLAN_CONFIG = {
     features: [
       'Unlimited staff',
       'Priority SMS delivery',
-      'Voice booking + WhatsApp',
+      'Voice booking',
       'Advanced analytics',
       'Custom domain',
     ],

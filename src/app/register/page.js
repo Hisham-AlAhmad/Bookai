@@ -9,7 +9,7 @@ import StepOwner from '@/components/register/StepOwner'
 import RegisterStepper from '@/components/register/RegisterStepper'
 import styles from '@/styles/register.module.css'
 
-const STEPS = ['Plan', 'Business', 'Brand', 'Account']
+const STEPS = ['Business', 'Assets', 'Plan', 'Account']
 
 export default function RegisterPage() {
   const [step, setStep] = useState(0)
@@ -116,27 +116,28 @@ export default function RegisterPage() {
 
         <div className={styles.stepWrap}>
           {step === 0 && (
-            <StepPlan
-              selected={plan}
-              onSelect={setPlan}
+            <StepBusiness
+              form={businessForm}
+              onChange={setBusinessForm}
               onNext={next}
+              // onBack={back}
             />
           )}
 
           {step === 1 && (
-            <StepBusiness
-              form={businessForm}
-              onChange={setBusinessForm}
+            <StepAssets
+              assets={assets}
+              onChange={setAssets}
+              businessName={businessForm.name}
               onNext={next}
               onBack={back}
             />
           )}
 
           {step === 2 && (
-            <StepAssets
-              assets={assets}
-              onChange={setAssets}
-              businessName={businessForm.name}
+            <StepPlan
+              selected={plan}
+              onSelect={setPlan}
               onNext={next}
               onBack={back}
             />

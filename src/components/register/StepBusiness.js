@@ -38,6 +38,13 @@ export default function StepBusiness({ form, onChange, onNext, onBack }) {
 
   const slug = useMemo(() => deriveSlug(form.name || ''), [form.name])
   const bioLength = form.bio?.length ?? 0
+  const isContinueDisabled =
+    !form.name.trim() ||
+    form.name.trim().length < 2 ||
+    !form.category.trim() ||
+    !form.city.trim() ||
+    !form.address.trim() ||
+    !phoneNumber.trim()
 
   function set(field, value) {
     onChange((prev) => ({ ...prev, [field]: value }))
@@ -193,8 +200,8 @@ export default function StepBusiness({ form, onChange, onNext, onBack }) {
       {error && <div className={styles.errorBox}>{error}</div>}
 
       <div className={styles.actions}>
-        <button className={styles.btnSecondary} onClick={onBack}>Back</button>
-        <button className={styles.btnPrimary} onClick={handleNext}>
+        <button type="button" className={styles.btnSecondary} onClick={onBack}>Back</button>
+        <button type="button" className={styles.btnPrimary} onClick={handleNext} disabled={isContinueDisabled}>
           Continue
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
