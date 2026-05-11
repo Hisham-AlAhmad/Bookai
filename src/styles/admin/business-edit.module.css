@@ -1,0 +1,146 @@
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid #ece9e2;
+    background: #fff;
+    color: #5a5550;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+
+.backLink:hover {
+    background: #faf8f5;
+    color: #111;
+    transform: translateY(-1px);
+}
+
+.backLink svg {
+    width: 14px;
+    height: 14px;
+}
+
+.statusGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.helperText {
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    color: #a39a8c;
+}
+
+.warningBanner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+    background: rgba(250, 245, 215, 0.75);
+    color: #a16207;
+    font-size: 0.82rem;
+}
+
+.warningCheck {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.warningCheck input {
+    width: 16px;
+    height: 16px;
+    accent-color: #eab308;
+}
+
+.metaRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.metaPill {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #7a7367;
+    border: 1px solid #efe9df;
+    background: #fff;
+}
+
+.metaPill strong {
+    color: #111;
+}
+
+.errorBanner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 0.85rem;
+}
+
+.skeletonCard {
+    background: #fff;
+    border: 1px solid #ece9e2;
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+}
+
+.skeletonLine {
+    height: 12px;
+    background: linear-gradient(90deg, #f1eee9, #faf8f5, #f1eee9);
+    border-radius: 999px;
+    animation: shimmer 1.4s ease infinite;
+}
+
+.skeletonLineLg {
+    height: 18px;
+}
+
+.skeletonLineMd {
+    height: 14px;
+}
+
+.skeletonStack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@media (max-width: 900px) {
+    .statusGrid {
+        grid-template-columns: 1fr;
+    }
+}

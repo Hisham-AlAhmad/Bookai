@@ -22,7 +22,7 @@ CREATE TABLE `businesses` (
 -- CreateTable
 CREATE TABLE `staff` (
     `id` VARCHAR(191) NOT NULL,
-    `business_id` VARCHAR(191) NOT NULL,
+    `business_id` VARCHAR(191) NULL,
     `name` VARCHAR(80) NOT NULL,
     `phone` VARCHAR(20) NULL,
     `avatar_url` TEXT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `staff` (
     `can_login` BOOLEAN NOT NULL DEFAULT false,
     `email` VARCHAR(120) NULL,
     `password_hash` TEXT NULL,
-    `role` ENUM('owner', 'manager', 'staff') NOT NULL DEFAULT 'staff',
+    `role` ENUM('owner', 'manager', 'staff', 'superadmin') NOT NULL DEFAULT 'staff',
     `active` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE `bookings` (
     `starts_at` DATETIME(3) NOT NULL,
     `ends_at` DATETIME(3) NOT NULL,
     `status` ENUM('pending', 'confirmed', 'cancelled', 'no_show') NOT NULL DEFAULT 'pending',
-    `booked_via` ENUM('voice', 'form', 'whatsapp') NOT NULL DEFAULT 'form',
+    `booked_via` ENUM('voice', 'form') NOT NULL DEFAULT 'form',
     `customer_note` TEXT NULL,
     `reminder_sent` ENUM('no', 'yes', 'failed') NOT NULL DEFAULT 'no',
     `cancelled_by` ENUM('customer', 'business') NULL,
@@ -117,7 +117,7 @@ CREATE TABLE `bookings` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `staff` ADD CONSTRAINT `staff_business_id_fkey` FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `staff` ADD CONSTRAINT `staff_business_id_fkey` FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `services` ADD CONSTRAINT `services_business_id_fkey` FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

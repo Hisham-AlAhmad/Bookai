@@ -1,10 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import styles from '@/styles/dashboard/sidebar.module.css'
+import AppSidebar from '@/components/shared/AppSidebar'
 
 const NAV_ITEMS = [
     {
@@ -92,134 +88,25 @@ const NAV_ITEMS = [
 ]
 
 export default function Sidebar({ session }) {
-    const pathname = usePathname()
-    const [collapsed, setCollapsed] = useState(false)
-    const [mobileOpen, setMobileOpen] = useState(false)
-    const role = session?.user?.role
-
-    useEffect(() => {
-        document.body.classList.toggle('sidebar-collapsed', collapsed)
-
-        return () => {
-            document.body.classList.remove('sidebar-collapsed')
+    const badge = session?.user?.businessSlug
+        ? {
+            label: 'Business',
+            value: session.user.businessSlug,
+            icon: (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M3 9l9-6 9 6" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 10v9h14v-9" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M9 19v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            ),
         }
-    }, [collapsed])
-
-    const visibleItems = NAV_ITEMS.filter((item) => item.roles.includes(role))
-
-    function isActive(item) {
-        if (item.exact) return pathname === item.href
-        return pathname.startsWith(item.href)
-    }
+        : null
 
     return (
-        <>
-            {/* Mobile overlay */}
-            {mobileOpen && (
-                <div
-                    className={styles.overlay}
-                    onClick={() => setMobileOpen(false)}
-                />
-            )}
-
-            {/* Mobile toggle button */}
-            <button
-                className={styles.mobileToggle}
-                onClick={() => setMobileOpen(true)}
-                aria-label="Open menu"
-            >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M3 12h18M3 6h18M3 18h18" strokeLinecap="round" />
-                </svg>
-            </button>
-
-            <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''} ${mobileOpen ? styles.mobileOpen : ''}`}>
-
-                {/* Logo area */}
-                <div className={styles.logoArea}>
-                    <img
-                        src={collapsed ? '/logos/logo-icon.png' : '/logos/logo-rectangle-dark.png'}
-                        alt="Bookai"
-                        className={styles.logoImage}
-                    />
-                    <button
-                        className={styles.collapseBtn}
-                        onClick={() => setCollapsed(!collapsed)}
-                        aria-label="Toggle sidebar"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            {collapsed
-                                ? <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-                                : <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                            }
-                        </svg>
-                    </button>
-                </div>
-
-                {/* Business badge */}
-                {!collapsed && session?.user?.businessSlug && (
-                    <div className={styles.businessBadge}>
-                        <span className={styles.businessBadgeGlow} aria-hidden="true" />
-                        <span className={styles.businessBadgeIcon} aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                                <path d="M3 9l9-6 9 6" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M5 10v9h14v-9" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M9 19v-6h6v6" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </span>
-                        <div className={styles.businessBadgeInfo}>
-                            <span className={styles.businessBadgeLabel}>Business</span>
-                            <span className={styles.businessBadgeName}>
-                                {session.user.businessSlug}
-                            </span>
-                        </div>
-                    </div>
-                )}
-
-                {/* Navigation */}
-                <nav className={styles.nav}>
-                    <ul className={styles.navList}>
-                        {visibleItems.map((item) => (
-                            <li key={item.href}>
-                                <Link
-                                    href={item.href}
-                                    className={`${styles.navItem} ${isActive(item) ? styles.navItemActive : ''}`}
-                                    title={collapsed ? item.label : undefined}
-                                    onClick={() => setMobileOpen(false)}
-                                >
-                                    <span className={styles.navIcon}>{item.icon}</span>
-                                    {!collapsed && <span className={styles.navLabel}>{item.label}</span>}
-                                    {isActive(item) && <span className={styles.activeIndicator} />}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-
-                {/* User footer */}
-                <div className={styles.userFooter}>
-                    <div className={styles.userAvatar}>
-                        {session?.user?.name?.[0]?.toUpperCase() || 'U'}
-                    </div>
-                    {!collapsed && (
-                        <div className={styles.userInfo}>
-                            <p className={styles.userName}>{session?.user?.name}</p>
-                            <p className={styles.userRole}>{role}</p>
-                        </div>
-                    )}
-                    <button
-                        className={styles.signOutBtn}
-                        onClick={() => signOut({ callbackUrl: '/login' })}
-                        title="Sign out"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" strokeLinecap="round" />
-                            <path d="M16 17l5-5-5-5M21 12H9" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-
-            </aside>
-        </>
+        <AppSidebar
+            session={session}
+            navItems={NAV_ITEMS}
+            badge={badge}
+        />
     )
 }

@@ -34,8 +34,8 @@ export const authOptions = {
           name: staff.name,
           email: staff.email,
           role: staff.role,
-          businessId: staff.business_id,
-          businessSlug: staff.business.slug,
+          businessId: staff.business_id || null,
+          businessSlug: staff.business?.slug || null,
         }
       },
     }),

@@ -31,8 +31,8 @@ export async function middleware(req) {
     }
   }
 
-  // --- Protect /admin — superadmin only ---
-  if (pathname.startsWith('/admin')) {
+  // --- Protect /admin and /super-admin — superadmin only ---
+  if (pathname.startsWith('/admin') || pathname.startsWith('/super-admin')) {
     if (!token || token.role !== 'superadmin') {
       return NextResponse.redirect(new URL('/login', req.url))
     }
@@ -41,7 +41,7 @@ export async function middleware(req) {
   // --- Redirect logged-in users away from /login ---
   if (pathname === '/login' && token) {
     if (token.role === 'superadmin') {
-      return NextResponse.redirect(new URL('/admin', req.url))
+      return NextResponse.redirect(new URL('/super-admin', req.url))
     }
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
@@ -51,5 +51,5 @@ export async function middleware(req) {
 
 export const config = {
   // Run middleware on these routes only
-  matcher: ['/dashboard/:path*', '/admin/:path*', '/login'],
+  matcher: ['/dashboard/:path*', '/admin/:path*', '/super-admin/:path*', '/login'],
 }

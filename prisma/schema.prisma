@@ -61,7 +61,7 @@ enum Plan {
 // ─────────────────────────────────────────────
 model Staff {
   id            String    @id @default(uuid())
-  business_id   String
+  business_id   String?
   name          String    @db.VarChar(80)
   phone         String?   @db.VarChar(20)
   avatar_url    String?   @db.Text
@@ -78,7 +78,7 @@ model Staff {
   updated_at    DateTime  @updatedAt
 
   // Relations
-  business      Business        @relation(fields: [business_id], references: [id])
+  business      Business?       @relation(fields: [business_id], references: [id])
   services      StaffService[]
   bookings      Booking[]
 
@@ -90,6 +90,7 @@ enum StaffRole {
   owner
   manager
   staff
+  superadmin
 }
 
 // ─────────────────────────────────────────────

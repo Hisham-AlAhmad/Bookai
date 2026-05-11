@@ -1,0 +1,90 @@
+.dashboardGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.panel {
+    background: #fff;
+    border: 1px solid #ece9e2;
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 10px 30px rgba(15, 15, 15, 0.05);
+}
+
+.panelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.panelTitle {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.panelSubtitle {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: #8d887d;
+}
+
+.actionList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.actionItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid #f1ebe2;
+    background: #faf8f5;
+    font-size: 0.9rem;
+    color: #3a3832;
+}
+
+.actionLink {
+    font-weight: 600;
+    color: #c8a96e;
+    text-decoration: none;
+}
+
+.actionLink:hover {
+    color: #a07840;
+}
+
+.placeholderCard {
+    background: #fff;
+    border: 1px solid #ece9e2;
+    border-radius: 18px;
+    padding: 2rem;
+    text-align: center;
+    color: #9b9487;
+    box-shadow: 0 12px 30px rgba(15, 15, 15, 0.05);
+}
+
+.placeholderTitle {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.placeholderText {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+    .dashboardGrid {
+        grid-template-columns: 1fr;
+    }
+}
