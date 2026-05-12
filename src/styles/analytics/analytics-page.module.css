@@ -1,0 +1,142 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 2rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Page Header ── */
+.pageHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #c8a96e;
+  margin: 0 0 0.35rem;
+}
+
+.pageTitle {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #0f0f0f;
+  margin: 0;
+  letter-spacing: -0.8px;
+  font-family: 'Georgia', serif;
+}
+
+.pageSubtitle {
+  font-size: 0.875rem;
+  color: #999;
+  margin: 0.35rem 0 0;
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.dateBadge {
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #e8e4dc;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #888;
+  background: #faf8f5;
+  white-space: nowrap;
+}
+
+/* ── Charts Layout ── */
+.chartsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chartFull {
+  width: 100%;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 1.25rem 1rem 2rem;
+    gap: 1.25rem;
+  }
+
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+
+  .dateBadge {
+    display: none;
+  }
+}
+
+/* ── Error state ── */
+.errorWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #ccc;
+}
+
+.errorWrap svg {
+  width: 36px;
+  height: 36px;
+  color: #e8a0a0;
+}
+
+.errorText {
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0;
+  max-width: 320px;
+}
+
+.retryBtn {
+  margin-top: 0.5rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid #c8a96e;
+  background: transparent;
+  color: #c8a96e;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  letter-spacing: 0.2px;
+}
+
+.retryBtn:hover {
+  background: #c8a96e;
+  color: #fff;
+}

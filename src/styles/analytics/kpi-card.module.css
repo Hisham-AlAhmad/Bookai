@@ -1,0 +1,122 @@
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border: 1px solid #ece9e2;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Icon */
+.iconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.iconWrap svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Body */
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.72rem;
+  color: #999;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  margin: 0 0 0.3rem;
+  text-transform: uppercase;
+}
+
+.value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  letter-spacing: -1px;
+  font-family: 'Georgia', serif;
+  line-height: 1;
+}
+
+/* Trend */
+.trend {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin: 0.4rem 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.trend_up {
+  color: #16a34a;
+}
+
+.trend_down {
+  color: #dc2626;
+}
+
+/* Glow accent */
+.glow {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  pointer-events: none;
+}
+
+/* Skeleton */
+.iconSkeleton {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 20%, #f0ede6);
+  animation: shimmer 1.4s ease infinite alternate;
+}
+
+.skeletonLine {
+  height: 11px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1eee9, #faf8f5, #f1eee9);
+  background-size: 200%;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 0.5rem;
+}
+
+.skeletonValue {
+  height: 32px;
+  width: 55%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f1eee9, #faf8f5, #f1eee9);
+  background-size: 200%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}

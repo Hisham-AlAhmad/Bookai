@@ -1,24 +1,27 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import SuperAdminPlaceholder from '@/components/admin/SuperAdminPlaceholder'
+import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard'
 
 export const metadata = {
-  title: 'Analytics — Super Admin',
+  title: 'Platform Analytics — Bookai Admin',
 }
 
-export default async function SuperAdminAnalyticsPage() {
+/**
+ * Super Admin platform-wide analytics page.
+ * Reuses AnalyticsDashboard with scope="platform"
+ * so the API returns aggregated, cross-business data.
+ */
+export default async function AdminAnalyticsPage() {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'superadmin') redirect('/login')
+  if (!session || session.user.role !== 'superadmin') redirect('/admin')
 
   return (
-    <SuperAdminPlaceholder
-      title="Analytics"
-      subtitle="Track platform growth and adoption."
-      description={{
-        title: 'Analytics dashboards are coming soon',
-        body: 'We will add KPI trends, cohort views, and funnel analytics for platform performance.',
-      }}
+    <AnalyticsDashboard
+      scope="platform"
+      title="Platform Analytics"
+      subtitle="Real-time insights across all businesses on the platform."
+      eyebrow="Super Admin"
     />
   )
 }
